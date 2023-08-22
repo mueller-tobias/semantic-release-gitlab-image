@@ -1,0 +1,21 @@
+name: Docker build
+on:
+  push:
+    # Pattern matched against refs/tags
+    tags:
+      - "*" # Push events to every tag not containing /
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - name: Kaniko build
+        uses: aevea/action-kaniko@master
+        with:
+          registry: ghcr.io
+          password: ${{ secrets.GITHUB_TOKEN }}
+          image: semantic-release-gitlab
+          tag: ${{ vars.GITHUB_REF_NAME }}
+          cache: true
+          cache_registry: cache
+          tag_with_latest: true
