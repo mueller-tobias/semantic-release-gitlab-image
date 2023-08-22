@@ -1,0 +1,5 @@
+# Crash log files
+*.log
+
+# Environment Files
+*.env
