@@ -1,20 +1,29 @@
 name: Docker build
 on:
   push:
-    tags:
-      - "*"
+    branches: [main]
+
 jobs:
   docker:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Get next version # checks if conventional commit would cause a new version
+        id: get_next_version
+        uses: thenativeweb/get-next-version@2.5.0
+
       - name: Kaniko build
+        if: ${{ steps.get_next_version.outputs.hasNextVersion == 'true' }}
         uses: aevea/action-kaniko@master
         with:
           registry: ghcr.io
           password: ${{ secrets.GITHUB_TOKEN }}
           image: semantic-release-gitlab
-          tag: ${{ vars.GITHUB_REF_NAME }}
+          tag: ${{steps.get_next_version.outputs.version}}
           cache: true
           cache_registry: cache
           tag_with_latest: true
