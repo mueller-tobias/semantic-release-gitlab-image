@@ -1,4 +1,4 @@
-FROM node:20.5.1-slim
+FROM 21.0.0-bookworm-slim
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
       git-core \
