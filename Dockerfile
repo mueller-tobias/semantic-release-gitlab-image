@@ -8,7 +8,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
       rm -rf /var/lib/apt/lists/* && \
       npm install -g semantic-release @semantic-release/gitlab semantic-release/exec semantic-release/changelog semantic-release/git
 
-
 USER 1000:1000
 
 CMD [ "semantic-release" ]
